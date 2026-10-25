@@ -1,0 +1,22 @@
+{
+  "services": {
+    "clean_zone": {
+      "service": "mdi:vector-polygon"
+    },
+    "clean_zones": {
+      "service": "mdi:vector-polygon"
+    },
+    "clean_spot": {
+      "service": "mdi:target-variant"
+    },
+    "refresh_maps": {
+      "service": "mdi:refresh"
+    },
+    "dismiss_alert": {
+      "service": "mdi:bell-cancel"
+    },
+    "send_raw_command": {
+      "service": "mdi:console-line"
+    }
+  }
+}

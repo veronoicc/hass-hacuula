@@ -12,7 +12,7 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.const import PERCENTAGE, EntityCategory
+from homeassistant.const import PERCENTAGE, EntityCategory, UnitOfArea, UnitOfTime
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -76,6 +76,27 @@ ROBOT_SENSORS: tuple[VacuulaRobotSensorDescription, ...] = (
         translation_key="error",
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda r: r.state.error,
+    ),
+    VacuulaRobotSensorDescription(
+        key="last_clean_area",
+        translation_key="last_clean_area",
+        native_unit_of_measurement=UnitOfArea.SQUARE_METERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda r: r.last_clean_area,
+    ),
+    VacuulaRobotSensorDescription(
+        key="last_clean_duration",
+        translation_key="last_clean_duration",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UnitOfTime.SECONDS,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda r: r.last_clean_duration,
+    ),
+    VacuulaRobotSensorDescription(
+        key="total_cleans",
+        translation_key="total_cleans",
+        state_class=SensorStateClass.TOTAL_INCREASING,
+        value_fn=lambda r: r.total_cleans,
     ),
 )
 

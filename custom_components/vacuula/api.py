@@ -205,6 +205,59 @@ class VacuulaApiClient:
                 maps.append(VacuulaMap(id=map_id, name=map_name, zones=[]))
         return maps
 
+    async def async_get_map_detail(self, serial: str, map_id: str) -> dict[str, Any]:
+        """Fetch map detail including RLE floor grid."""
+        try:
+            data = await self._request("GET", f"/api/robot/{serial}/maps/{map_id}")
+            return data if isinstance(data, dict) else {}
+        except VacuulaError as err:
+            _LOGGER.debug(
+                "Could not fetch map detail for %s map %s: %s", serial, map_id, err
+            )
+            return {}
+
+    async def async_get_runs(self, serial: str) -> list[dict[str, Any]]:
+        """Fetch historical cleaning runs for a robot."""
+        try:
+            data = await self._request("GET", f"/api/robot/{serial}/runs")
+            if isinstance(data, list):
+                return data
+            if isinstance(data, dict):
+                return data.get("runs", [])
+            return []
+        except VacuulaError as err:
+            _LOGGER.debug("Could not fetch cleaning runs for %s: %s", serial, err)
+            return []
+
+    async def async_get_run_detail(self, serial: str, run_id: str) -> dict[str, Any]:
+        """Fetch detail and RLE path of a cleaning run."""
+        try:
+            data = await self._request("GET", f"/api/robot/{serial}/runs/{run_id}")
+            return data if isinstance(data, dict) else {}
+        except VacuulaError as err:
+            _LOGGER.debug(
+                "Could not fetch run detail for %s run %s: %s", serial, run_id, err
+            )
+            return {}
+
+    async def async_start_map_exploration(
+        self, serial: str, robot_type: str = "gen3"
+    ) -> Any:
+        """Start a house cleaning exploration run to generate or update map."""
+        is_gen4 = "gen4" in robot_type.lower() or any(
+            g in robot_type.lower() for g in ("d8", "d9", "d10")
+        )
+        if is_gen4:
+            payload = {"ability": "exploration.start"}
+        else:
+            payload = {
+                "cmd": "startCleaning",
+                "params": {"category": 2, "mode": 2, "navigationMode": 1},
+            }
+        return await self._request(
+            "POST", f"/api/robot/{serial}/command", json_data=payload
+        )
+
     async def async_get_boundaries(
         self, serial: str, map_id: str, robot_type: str = "gen3"
     ) -> list[VacuulaZone]:

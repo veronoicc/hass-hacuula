@@ -69,6 +69,12 @@ ROBOT_BINARY_SENSORS: tuple[VacuulaRobotBinarySensorDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         is_on_fn=lambda r: r.connected,
     ),
+    VacuulaRobotBinarySensorDescription(
+        key="docked",
+        translation_key="docked",
+        device_class=BinarySensorDeviceClass.PLUG,
+        is_on_fn=lambda r: r.state.is_docked,
+    ),
 )
 
 

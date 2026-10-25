@@ -45,6 +45,143 @@ clean_zone:
             - "extra_care"
             - "deep"
 
+clean_zones:
+  name: Clean zones
+  description: Start cleaning one or more room zones or boundary UUIDs on a Vacuula robot.
+  fields:
+    entity_id:
+      name: Robot vacuum entity
+      description: Vacuum entity to target.
+      required: false
+      example: "vacuum.living_room_vacuum"
+      selector:
+        entity:
+          filter:
+            - domain: vacuum
+    serial:
+      name: Robot serial
+      description: Robot serial number (optional alternative to entity_id).
+      required: false
+      example: "OPS12345678-0001"
+      selector:
+        text:
+    zones:
+      name: Zones
+      description: Room zone name(s) or boundary UUID(s) (list or comma-separated string).
+      required: true
+      example: "Kitchen, Living Room"
+      selector:
+        text:
+    map_id:
+      name: Map ID
+      description: Optional floorplan ID (defaults to active floorplan).
+      required: false
+      example: "map_1"
+      selector:
+        text:
+    fan_speed:
+      name: Fan speed
+      description: Optional cleaning power mode (eco or turbo).
+      required: false
+      selector:
+        select:
+          options:
+            - "eco"
+            - "turbo"
+    navigation_mode:
+      name: Navigation mode
+      description: Optional navigation mode (normal, extra_care, or deep).
+      required: false
+      selector:
+        select:
+          options:
+            - "normal"
+            - "extra_care"
+            - "deep"
+
+clean_spot:
+  name: Clean spot
+  description: Start a localized spot cleaning run (Gen3 robots).
+  fields:
+    entity_id:
+      name: Robot vacuum entity
+      description: Vacuum entity to target.
+      required: false
+      example: "vacuum.living_room_vacuum"
+      selector:
+        entity:
+          filter:
+            - domain: vacuum
+    serial:
+      name: Robot serial
+      description: Robot serial number (optional alternative to entity_id).
+      required: false
+      example: "OPS12345678-0001"
+      selector:
+        text:
+    width:
+      name: Spot width (cm)
+      description: Width of the spot area in centimeters (default 200).
+      required: false
+      default: 200
+      selector:
+        number:
+          min: 100
+          max: 400
+          step: 50
+          unit_of_measurement: "cm"
+    height:
+      name: Spot height (cm)
+      description: Height of the spot area in centimeters (default 200).
+      required: false
+      default: 200
+      selector:
+        number:
+          min: 100
+          max: 400
+          step: 50
+          unit_of_measurement: "cm"
+    fan_speed:
+      name: Fan speed
+      description: Optional cleaning power mode (eco or turbo).
+      required: false
+      selector:
+        select:
+          options:
+            - "eco"
+            - "turbo"
+    navigation_mode:
+      name: Navigation mode
+      description: Optional navigation mode (normal, extra_care, or deep).
+      required: false
+      selector:
+        select:
+          options:
+            - "normal"
+            - "extra_care"
+            - "deep"
+
+refresh_maps:
+  name: Refresh maps and runs
+  description: Reload floor maps, room boundaries, and historical cleaning runs from the Vacuula server.
+  fields:
+    entity_id:
+      name: Robot vacuum entity
+      description: Optional vacuum entity (if omitted, refreshes all paired robots).
+      required: false
+      example: "vacuum.living_room_vacuum"
+      selector:
+        entity:
+          filter:
+            - domain: vacuum
+    serial:
+      name: Robot serial
+      description: Optional robot serial (if omitted, refreshes all paired robots).
+      required: false
+      example: "OPS12345678-0001"
+      selector:
+        text:
+
 dismiss_alert:
   name: Dismiss alert
   description: Dismisses the active notification alert on a Gen3 robot vacuum.

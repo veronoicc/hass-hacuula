@@ -172,6 +172,19 @@ class VacuulaRobot:
     state: VacuulaRobotState = field(default_factory=VacuulaRobotState)
     maps: list[VacuulaMap] = field(default_factory=list)
     zones: dict[str, VacuulaZone] = field(default_factory=dict)
+    floormap: dict[str, Any] | None = None
+    last_run: dict[str, Any] | None = None
+    last_runmap: dict[str, Any] | None = None
+    active_map_id: str | None = None
+    active_map_name: str | None = None
+    boundaries: list[dict[str, Any]] = field(default_factory=list)
+    preferred_navigation_mode: str = "normal"
+    preferred_category: int = 2
+    preferred_fan_speed: str = "turbo"
+    selected_zone: str = "all"
+    last_clean_area: float | None = None
+    last_clean_duration: int | None = None
+    total_cleans: int = 0
 
     @property
     def is_gen4(self) -> bool:

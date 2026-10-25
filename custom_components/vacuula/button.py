@@ -50,6 +50,52 @@ async def _async_press_dismiss_alert(
     await coordinator.async_request_refresh()
 
 
+async def _async_press_refresh_maps(
+    coordinator: VacuulaDataUpdateCoordinator, robot: VacuulaRobot
+) -> None:
+    """Press refresh maps button."""
+    await coordinator.async_refresh_robot_maps(robot.serial)
+
+
+async def _async_press_explore_map(
+    coordinator: VacuulaDataUpdateCoordinator, robot: VacuulaRobot
+) -> None:
+    """Press explore map button."""
+    await coordinator.api.async_start_map_exploration(robot.serial, robot.robot_type)
+    await coordinator.async_request_refresh()
+
+
+async def _async_press_clean_zone(
+    coordinator: VacuulaDataUpdateCoordinator, robot: VacuulaRobot
+) -> None:
+    """Press clean zone button."""
+    target_zone = None
+    if robot.selected_zone and robot.selected_zone != "all":
+        for z in robot.zones.values():
+            if z.name.lower() == robot.selected_zone.lower():
+                target_zone = z
+                break
+    mode = robot.preferred_fan_speed or "turbo"
+    nav_mode = robot.preferred_navigation_mode or "normal"
+    if target_zone:
+        await coordinator.api.async_start_cleaning(
+            robot.serial,
+            robot_type=robot.robot_type,
+            mode=mode,
+            nav_mode=nav_mode,
+            map_id=target_zone.map_id,
+            zone_ids=[target_zone.id],
+        )
+    else:
+        await coordinator.api.async_start_cleaning(
+            robot.serial,
+            robot_type=robot.robot_type,
+            mode=mode,
+            nav_mode=nav_mode,
+        )
+    await coordinator.async_request_refresh()
+
+
 ROBOT_BUTTONS: tuple[VacuulaRobotButtonDescription, ...] = (
     VacuulaRobotButtonDescription(
         key="locate",
@@ -63,6 +109,23 @@ ROBOT_BUTTONS: tuple[VacuulaRobotButtonDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         press_fn=_async_press_dismiss_alert,
         supported_fn=lambda r: not r.is_gen4,
+    ),
+    VacuulaRobotButtonDescription(
+        key="refresh_maps",
+        translation_key="refresh_maps",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        press_fn=_async_press_refresh_maps,
+    ),
+    VacuulaRobotButtonDescription(
+        key="explore_map",
+        translation_key="explore_map",
+        entity_category=EntityCategory.CONFIG,
+        press_fn=_async_press_explore_map,
+    ),
+    VacuulaRobotButtonDescription(
+        key="clean_selected_zone",
+        translation_key="clean_selected_zone",
+        press_fn=_async_press_clean_zone,
     ),
 )
 

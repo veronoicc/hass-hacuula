@@ -64,6 +64,10 @@ def mock_vacuula_api():
                 )
             ]
         )
+        api.async_get_map_detail = AsyncMock(return_value={})
+        api.async_get_runs = AsyncMock(return_value=[])
+        api.async_get_run_detail = AsyncMock(return_value={})
+        api.async_clean_spot = AsyncMock()
         api.async_start_cleaning = AsyncMock()
         api.async_dismiss_alert = AsyncMock()
         api.async_send_raw_command = AsyncMock()

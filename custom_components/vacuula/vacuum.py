@@ -251,12 +251,31 @@ class VacuulaVacuumEntity(
                 self._serial, robot.robot_type
             )
         else:
-            await self.coordinator.api.async_start_cleaning(
-                self._serial,
-                robot_type=robot.robot_type,
-                mode=self._current_mode,
-                nav_mode=self._current_nav_mode,
-            )
+            mode = robot.preferred_fan_speed or self._current_mode
+            nav_mode = robot.preferred_navigation_mode or self._current_nav_mode
+            target_zone = None
+            if robot.selected_zone and robot.selected_zone != "all":
+                for z in robot.zones.values():
+                    if z.name.lower() == robot.selected_zone.lower():
+                        target_zone = z
+                        break
+
+            if target_zone:
+                await self.coordinator.api.async_start_cleaning(
+                    self._serial,
+                    robot_type=robot.robot_type,
+                    mode=mode,
+                    nav_mode=nav_mode,
+                    map_id=target_zone.map_id,
+                    zone_ids=[target_zone.id],
+                )
+            else:
+                await self.coordinator.api.async_start_cleaning(
+                    self._serial,
+                    robot_type=robot.robot_type,
+                    mode=mode,
+                    nav_mode=nav_mode,
+                )
         await self.coordinator.async_request_refresh()
 
     async def async_pause(self) -> None:

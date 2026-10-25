@@ -64,6 +64,9 @@ def mock_api():
             )
         ]
     )
+    api.async_get_map_detail = AsyncMock(return_value={})
+    api.async_get_runs = AsyncMock(return_value=[])
+    api.async_get_run_detail = AsyncMock(return_value={})
     return api
 
 

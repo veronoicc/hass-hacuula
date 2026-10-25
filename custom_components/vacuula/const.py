@@ -29,7 +29,22 @@ CLEANING_MODES = [MODE_TURBO, MODE_ECO]
 NAV_MODE_NORMAL = "normal"
 NAV_MODE_EXTRA_CARE = "extra_care"
 NAV_MODE_DEEP = "deep"
-NAVIGATION_MODES = [NAV_MODE_NORMAL, NAV_MODE_EXTRA_CARE, NAV_MODE_DEEP]
+NAV_MODE_GENTLE = "gentle"
+NAVIGATION_MODES = [
+    NAV_MODE_NORMAL,
+    NAV_MODE_EXTRA_CARE,
+    NAV_MODE_DEEP,
+    NAV_MODE_GENTLE,
+]
+
+GEN3_NAV_MODES = [NAV_MODE_NORMAL, NAV_MODE_EXTRA_CARE, NAV_MODE_DEEP]
+GEN4_NAV_MODES = [NAV_MODE_NORMAL, NAV_MODE_GENTLE]
+
+CLEAN_CATEGORY_MAP = "map"
+CLEAN_CATEGORY_HOUSE = "house"
+GEN3_CLEAN_CATEGORIES = [CLEAN_CATEGORY_MAP, CLEAN_CATEGORY_HOUSE]
+
+ALL_ZONES_OPTION = "all"
 
 # Supported platforms
 PLATFORMS: list[Platform] = [
@@ -38,6 +53,8 @@ PLATFORMS: list[Platform] = [
     Platform.BINARY_SENSOR,
     Platform.BUTTON,
     Platform.SWITCH,
+    Platform.SELECT,
+    Platform.IMAGE,
 ]
 
 # Dispatcher signals
@@ -45,12 +62,20 @@ SIGNAL_NEW_ROBOT = f"{DOMAIN}_new_robot_{{}}"
 
 # Services
 SERVICE_CLEAN_ZONE = "clean_zone"
+SERVICE_CLEAN_ZONES = "clean_zones"
+SERVICE_CLEAN_SPOT = "clean_spot"
+SERVICE_REFRESH_MAPS = "refresh_maps"
 SERVICE_DISMISS_ALERT = "dismiss_alert"
 SERVICE_SEND_RAW_COMMAND = "send_raw_command"
 
 ATTR_SERIAL = "serial"
 ATTR_MAP_NAME = "map_name"
 ATTR_ZONE_NAME = "zone_name"
+ATTR_ZONES = "zones"
+ATTR_MAP_ID = "map_id"
+ATTR_FAN_SPEED = "fan_speed"
+ATTR_WIDTH = "width"
+ATTR_HEIGHT = "height"
 ATTR_MODE = "mode"
 ATTR_NAV_MODE = "navigation_mode"
 ATTR_COMMAND = "command"

@@ -62,6 +62,15 @@
       },
       "error": {
         "name": "Error"
+      },
+      "last_clean_area": {
+        "name": "Last clean area"
+      },
+      "last_clean_duration": {
+        "name": "Last clean duration"
+      },
+      "total_cleans": {
+        "name": "Total cleans"
       }
     },
     "binary_sensor": {
@@ -76,6 +85,9 @@
       },
       "connected": {
         "name": "Connected"
+      },
+      "docked": {
+        "name": "Docked"
       }
     },
     "button": {
@@ -84,11 +96,39 @@
       },
       "dismiss_alert": {
         "name": "Dismiss alert"
+      },
+      "refresh_maps": {
+        "name": "Refresh maps"
+      },
+      "explore_map": {
+        "name": "Explore map"
+      },
+      "clean_selected_zone": {
+        "name": "Clean selected zone"
       }
     },
     "switch": {
       "schedule": {
         "name": "Schedule"
+      }
+    },
+    "select": {
+      "navigation_mode": {
+        "name": "Navigation mode"
+      },
+      "cleaning_category": {
+        "name": "Cleaning mode"
+      },
+      "target_zone": {
+        "name": "Target zone"
+      }
+    },
+    "image": {
+      "floor_map": {
+        "name": "Floor map"
+      },
+      "last_run_map": {
+        "name": "Last run map"
       }
     }
   },
@@ -116,6 +156,80 @@
         "navigation_mode": {
           "name": "Navigation mode",
           "description": "Navigation mode (normal, extra_care, or deep)."
+        }
+      }
+    },
+    "clean_zones": {
+      "name": "Clean zones",
+      "description": "Start cleaning one or more room zones or boundary UUIDs on a Vacuula robot.",
+      "fields": {
+        "entity_id": {
+          "name": "Robot vacuum entity",
+          "description": "Vacuum entity to target."
+        },
+        "serial": {
+          "name": "Robot serial",
+          "description": "Robot serial number (optional alternative to entity_id)."
+        },
+        "zones": {
+          "name": "Zones",
+          "description": "Room zone name(s) or boundary UUID(s) (list or comma-separated string)."
+        },
+        "map_id": {
+          "name": "Map ID",
+          "description": "Optional floorplan ID (defaults to active floorplan)."
+        },
+        "fan_speed": {
+          "name": "Fan speed",
+          "description": "Optional cleaning power mode (eco or turbo)."
+        },
+        "navigation_mode": {
+          "name": "Navigation mode",
+          "description": "Optional navigation mode (normal, extra_care, or deep)."
+        }
+      }
+    },
+    "clean_spot": {
+      "name": "Clean spot",
+      "description": "Start a localized spot cleaning run (Gen3 robots).",
+      "fields": {
+        "entity_id": {
+          "name": "Robot vacuum entity",
+          "description": "Vacuum entity to target."
+        },
+        "serial": {
+          "name": "Robot serial",
+          "description": "Robot serial number (optional alternative to entity_id)."
+        },
+        "width": {
+          "name": "Spot width (cm)",
+          "description": "Width of the spot area in centimeters (default 200)."
+        },
+        "height": {
+          "name": "Spot height (cm)",
+          "description": "Height of the spot area in centimeters (default 200)."
+        },
+        "fan_speed": {
+          "name": "Fan speed",
+          "description": "Optional cleaning power mode (eco or turbo)."
+        },
+        "navigation_mode": {
+          "name": "Navigation mode",
+          "description": "Optional navigation mode (normal, extra_care, or deep)."
+        }
+      }
+    },
+    "refresh_maps": {
+      "name": "Refresh maps and runs",
+      "description": "Reload floor maps, room boundaries, and historical cleaning runs from the Vacuula server.",
+      "fields": {
+        "entity_id": {
+          "name": "Robot vacuum entity",
+          "description": "Optional vacuum entity (if omitted, refreshes all paired robots)."
+        },
+        "serial": {
+          "name": "Robot serial",
+          "description": "Optional robot serial (if omitted, refreshes all paired robots)."
         }
       }
     },

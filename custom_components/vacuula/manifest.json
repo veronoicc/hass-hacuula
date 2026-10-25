@@ -1,12 +1,12 @@
 {
   "domain": "vacuula",
-  "name": "Vacuula",
+  "name": "Hacuula",
   "codeowners": ["@veronoicc"],
   "config_flow": true,
-  "documentation": "https://github.com/veronoicc/hass-vacuula",
+  "documentation": "https://github.com/veronoicc/hass-hacuula",
   "integration_type": "hub",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/veronoicc/hass-vacuula/issues",
+  "issue_tracker": "https://github.com/veronoicc/hass-hacuula/issues",
   "requirements": [],
   "version": "1.0.0"
 }
