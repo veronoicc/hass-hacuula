@@ -1,0 +1,151 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Vacuula Server",
+        "description": "Enter the connection details for your Vacuula server restoring local control for Neato robots.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "use_ssl": "Use SSL",
+          "verify_ssl": "Verify SSL certificate"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Vacuula Server",
+        "description": "Update the host address or SSL settings for your Vacuula server.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "use_ssl": "Use SSL",
+          "verify_ssl": "Verify SSL certificate"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the Vacuula server. Verify the host address and port.",
+      "invalid_auth": "Authentication failed connecting to the Vacuula server.",
+      "invalid_server": "The server did not return a valid Vacuula response.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This Vacuula server is already configured.",
+      "reconfigure_successful": "Reconfiguration was successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Vacuula Options",
+        "description": "Configure polling interval and default cleaning settings.",
+        "data": {
+          "scan_interval": "Update interval (seconds)",
+          "default_mode": "Default cleaning mode",
+          "default_nav_mode": "Default navigation mode"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "server_version": {
+        "name": "Server version"
+      },
+      "connected_robots": {
+        "name": "Connected robots"
+      },
+      "battery": {
+        "name": "Battery"
+      },
+      "current_action": {
+        "name": "Current action"
+      },
+      "error": {
+        "name": "Error"
+      }
+    },
+    "binary_sensor": {
+      "server_status": {
+        "name": "Server status"
+      },
+      "charging": {
+        "name": "Charging"
+      },
+      "dustbin": {
+        "name": "Dustbin"
+      },
+      "connected": {
+        "name": "Connected"
+      }
+    },
+    "button": {
+      "locate": {
+        "name": "Locate"
+      },
+      "dismiss_alert": {
+        "name": "Dismiss alert"
+      }
+    },
+    "switch": {
+      "schedule": {
+        "name": "Schedule"
+      }
+    }
+  },
+  "services": {
+    "clean_zone": {
+      "name": "Clean zone",
+      "description": "Commands a Vacuula robot to clean a specific persistent map zone or room.",
+      "fields": {
+        "serial": {
+          "name": "Robot serial",
+          "description": "Serial number of the robot to command."
+        },
+        "zone_name": {
+          "name": "Zone name",
+          "description": "Name of the room or zone defined on the robot's map."
+        },
+        "map_name": {
+          "name": "Map name",
+          "description": "Name of the floor map containing the zone (optional if zone name is unique)."
+        },
+        "mode": {
+          "name": "Cleaning mode",
+          "description": "Cleaning mode (turbo or eco)."
+        },
+        "navigation_mode": {
+          "name": "Navigation mode",
+          "description": "Navigation mode (normal, extra_care, or deep)."
+        }
+      }
+    },
+    "dismiss_alert": {
+      "name": "Dismiss alert",
+      "description": "Dismisses the active notification alert on a Gen3 robot vacuum.",
+      "fields": {
+        "serial": {
+          "name": "Robot serial",
+          "description": "Serial number of the robot."
+        }
+      }
+    },
+    "send_raw_command": {
+      "name": "Send raw command",
+      "description": "Sends an arbitrary JSON command or ability to a Vacuula-connected robot.",
+      "fields": {
+        "serial": {
+          "name": "Robot serial",
+          "description": "Serial number of the robot."
+        },
+        "command": {
+          "name": "Command or ability",
+          "description": "Gen3 command name (e.g. getRobotState) or Gen4 ability name (e.g. state.show)."
+        },
+        "params": {
+          "name": "Parameters",
+          "description": "Optional JSON parameters dictionary."
+        }
+      }
+    }
+  }
+}
