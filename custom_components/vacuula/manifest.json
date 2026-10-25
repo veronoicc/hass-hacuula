@@ -9,5 +9,5 @@
   "issue_tracker": "https://github.com/veronoicc/hass-vacuula/issues",
   "requirements": [],
   "version": "1.0.0",
-  "categories": ["vacuum"]
+  "categories": ["appliances_cleaning"]
 }
