@@ -8,6 +8,5 @@
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/veronoicc/hass-vacuula/issues",
   "requirements": [],
-  "version": "1.0.0",
-  "categories": ["appliances_cleaning"]
+  "version": "1.0.0"
 }
