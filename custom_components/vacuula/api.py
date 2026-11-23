@@ -152,12 +152,16 @@ class VacuulaApiClient:
         if isinstance(data, list):
             return data
         if isinstance(data, dict):
-            if "robots" in data and isinstance(data["robots"], list):
-                return data["robots"]
-            if "robots" in data and isinstance(data["robots"], dict):
-                return list(data["robots"].values())
-            # Dictionary keyed by serial number
-            return list(data.values())
+            robots = data.get("robots", data)
+            if isinstance(robots, list):
+                return robots
+            if isinstance(robots, dict):
+                # The API identifies each robot by its dictionary key.
+                return [
+                    {**robot, "serial": str(serial)}
+                    for serial, robot in robots.items()
+                    if isinstance(robot, dict)
+                ]
         return []
 
     async def async_get_robot_state(

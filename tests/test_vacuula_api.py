@@ -150,6 +150,78 @@ async def test_get_robots():
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("nested", [False, True], ids=["direct", "nested"])
+async def test_get_robots_serial_keyed_dictionary(nested):
+    """Robot identifiers in dictionary keys must survive discovery."""
+    client = VacuulaApiClient(host="127.0.0.1")
+    robots_by_serial = {
+        "GEN4_ID": {
+            "type": "neato.gen4",
+            "name": "Test D10",
+            "connected": True,
+            "label_serial": "LABEL_SERIAL",
+        },
+        "GEN3_ID": {
+            "type": "neato.gen3",
+            "name": "Test D7",
+            "connected": False,
+        },
+    }
+    response = {"robots": robots_by_serial} if nested else robots_by_serial
+
+    with patch.object(client, "_request", AsyncMock(return_value=response)):
+        robots = await client.async_get_robots()
+
+    assert [robot["serial"] for robot in robots] == ["GEN4_ID", "GEN3_ID"]
+    assert robots[0]["name"] == "Test D10"
+    assert robots[0]["type"] == "neato.gen4"
+    assert robots[0]["label_serial"] == "LABEL_SERIAL"
+    assert robots[1]["connected"] is False
+
+
+@pytest.mark.asyncio
+async def test_get_robots_nested_list():
+    """Existing list format wrapped under 'robots' remains supported."""
+    client = VacuulaApiClient(host="127.0.0.1")
+    response = {"robots": [{"serial": "GEN3_ID", "type": "neato.gen3"}]}
+
+    with patch.object(client, "_request", AsyncMock(return_value=response)):
+        robots = await client.async_get_robots()
+
+    assert robots == response["robots"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "response",
+    [{}, {"robots": {}}, {"robots": []}, None, "unexpected"],
+)
+async def test_get_robots_empty_or_invalid_response(response):
+    """Empty and unexpected payloads must not create phantom robots."""
+    client = VacuulaApiClient(host="127.0.0.1")
+
+    with patch.object(client, "_request", AsyncMock(return_value=response)):
+        robots = await client.async_get_robots()
+
+    assert robots == []
+
+
+@pytest.mark.asyncio
+async def test_get_robots_ignore_non_robot_dictionary_entries():
+    """Non-dictionary mapping values must not become robot records."""
+    client = VacuulaApiClient(host="127.0.0.1")
+    response = {
+        "GEN4_ID": {"type": "neato.gen4", "name": "Test D10"},
+        "unexpected": None,
+    }
+
+    with patch.object(client, "_request", AsyncMock(return_value=response)):
+        robots = await client.async_get_robots()
+
+    assert robots == [{"type": "neato.gen4", "name": "Test D10", "serial": "GEN4_ID"}]
+
+
+@pytest.mark.asyncio
 async def test_cleaning_commands():
     """Test Gen3 and Gen4 start cleaning requests."""
     client = VacuulaApiClient(host="127.0.0.1")
